@@ -34,6 +34,7 @@ class Notes {
 
     // Кнопки на заметках 
     document.addEventListener('click', event => {
+      console.log(event.target);
       if (event.target.classList.contains('fa-ellipsis-v')){
         this.openMoreInfo(event);
       } else {
@@ -42,9 +43,12 @@ class Notes {
       
       if(event.target.classList.contains('deleteBtn')){
         this.remove(event, 'deleteData.php', this.request);
-      }else if(event.target.classList.contains('editBtn')){
+      }else if(event.target.parentElement.classList.contains('note') || event.target.parentElement.classList.contains('content')){ //event.target.classList.contains('editBtn')
         this.showUpdateNoteForm(event);
+      } else if(event.target.classList.contains('add-notes-bg')) {
+        this.closeUpdateNoteForm();
       }
+
 
       if(event.target.id == 'completeBtn') {
         this.noteComplete(event);
@@ -101,7 +105,7 @@ class Notes {
             this.createDomElements(lastNote.id, lastNote.done);
 
             if (lastNote.todoTitle != '') {
-              this.edit.setAttribute('has-title', 'hasTitle');
+              // this.edit.setAttribute('has-title', 'hasTitle');
               this.content.insertBefore(this.noteHeader, this.content.children[0]);
               this.noteHeader.insertAdjacentText('afterbegin', lastNote.todoTitle);
               this.noteDescription.insertAdjacentText('afterbegin', lastNote.todoDescription);
@@ -132,7 +136,7 @@ class Notes {
               this.createDomElements(item.id, item.done);
 
               if (item.todoTitle != '') {
-                this.edit.setAttribute('has-title', 'hasTitle');
+                // this.edit.setAttribute('has-title', 'hasTitle');
                 this.content.insertBefore(this.noteHeader, this.content.children[0]);
                 this.noteHeader.insertAdjacentText('afterbegin', item.todoTitle);
                 this.noteDescription.insertAdjacentText('afterbegin', item.todoDescription);
@@ -192,7 +196,7 @@ class Notes {
     this.moreOptionsBtn = document.createElement('i');
     this.moreOptionsList = document.createElement('ul');
 
-    this.edit = document.createElement('li');
+    // this.edit = document.createElement('li');
     this.deleteItem = document.createElement('li');
 
     // Добавление классов
@@ -207,17 +211,17 @@ class Notes {
     this.moreOptionsContainer.classList.add('more-info');
     this.moreOptionsBtn.classList.add('fas');
     this.moreOptionsBtn.classList.add('fa-ellipsis-v');
-    this.edit.classList.add('editBtn');
+    // this.edit.classList.add('editBtn');
     this.deleteItem.classList.add('deleteBtn');
 
 
     this.deleteItem.setAttribute('data-id', id);
-    this.edit.setAttribute('data-id', id);
+    // this.edit.setAttribute('data-id', id);
     this.doneBtn.setAttribute('data-id', id);
     this.doneBtn.setAttribute('complete', done);
     this.doneBtn.id = "completeBtn";
 
-    this.edit.innerHTML = 'Изменить';
+    // this.edit.innerHTML = 'Изменить';
     this.deleteItem.innerHTML = 'Удалить';
 
     // Доабвление DOM елементов
@@ -231,7 +235,7 @@ class Notes {
     this.doneBtnContainer.appendChild(this.doneBtn);
     this.moreOptionsContainer.appendChild(this.moreOptionsBtn);
     this.moreOptionsContainer.appendChild(this.moreOptionsList);
-    this.moreOptionsList.appendChild(this.edit);
+    // this.moreOptionsList.appendChild(this.edit);
     this.moreOptionsList.appendChild(this.deleteItem);
   }
 
@@ -299,12 +303,21 @@ class Notes {
   }
 
   showUpdateNoteForm(event) {
+    // Закрытие формы при нажатии на клавишу esc
+    document.addEventListener('keyup', (e) => {
+      if (e.keyCode == 27) {
+        this.closeUpdateNoteForm();
+      }
+    })
+
     this.updateBtn.style.display = "none";
     this.theEvent = event;
     this.theTargetId = event.target.getAttribute('data-id');
     this.note = this.theEvent.target.closest('.content');
     this.hasHeader = this.note.querySelector('.note-header');
     // let targetId = event.target.getAttribute('data-id');
+
+
     
     this.updateNotesForm.style.display = "block";
     this.updateDescription.focus();

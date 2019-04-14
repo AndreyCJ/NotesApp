@@ -41,7 +41,7 @@
     <div class="add-notes-bg">
       <div class="add-notes-container"> 
         <div class="addNoteTitle">
-          <input id="updateNoteTitle" type="text" req placeholder="Заголовок (не обязательно)">   
+          <input id="updateNoteTitle" type="text" req placeholder="Заголовок">   
         </div>  
         <div class="addNoteDescription">
           <textarea name="updateNoteDescription" cols="30" rows="10" id="updateNoteDescription" placeholder="Заметка..." required></textarea>

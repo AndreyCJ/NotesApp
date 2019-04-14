@@ -42,6 +42,13 @@ class NoteForm {
 
 
   showAddNoteForm() {
+    // Закрытие формы при нажатии на клавишу esc
+    document.addEventListener('keyup', (e) => {
+      if (e.keyCode == 27) {
+        this.closeAddNoteForm();
+      }
+    })
+
     this.updateBtn.style.display = "none";
     this.submitBtn.style.display = "none";
     this.addNotesForm.style.display = "block";
