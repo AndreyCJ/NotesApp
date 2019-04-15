@@ -53,6 +53,7 @@ class NoteForm {
     this.submitBtn.style.display = "none";
     this.addNotesForm.style.display = "block";
     this.description.focus();
+    document.body.style.overflow = "hidden";
     // Проверка заполнения при открытии
     if (this.description.value != "") {
       this.submitBtn.style.display = "block";

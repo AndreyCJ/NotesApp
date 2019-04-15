@@ -321,6 +321,7 @@ class Notes {
     
     this.updateNotesForm.style.display = "block";
     this.updateDescription.focus();
+    document.body.style.overflow = "hidden";
     if(event.target.hasAttribute('has-title')) {
       this.oldTitle = event.target.closest('.note').querySelector('.note-header').innerHTML;
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
