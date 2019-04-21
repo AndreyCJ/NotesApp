@@ -10,6 +10,7 @@ class NoteForm {
     this.title = document.getElementById('addNoteTitle');
     this.arrayOfInputs = document.querySelectorAll('#addNoteTitle, #addNoteDescription');
     this.openMenu = document.querySelector('#openMenuBtn');
+    this.header = document.querySelector('header');
 
     // Переменные для обновления данных
     this.updateNotesForm = document.querySelector('section.update-notes');
@@ -23,12 +24,16 @@ class NoteForm {
       this.addNoteButton.innerHTML = '<i class="fas fa-plus"></i>Добавить заметку';
     }
 
-    // let timer = setTimeout(() => this.openMoreInfo(), 1000);
     this.events();
   }
 
   events() {
     this.addNoteButton.addEventListener('click', this.showAddNoteForm.bind(this));
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('add-notes-bg')) {
+        this.closeAddNoteForm();
+      }
+    });
     this.closeAddNoteButton.addEventListener('click', this.closeAddNoteForm.bind(this));
     this.closeUpdateNoteBtn.addEventListener('click', this.closeUpdateNoteForm.bind(this));
     window.addEventListener('resize', () => {
@@ -38,8 +43,8 @@ class NoteForm {
         this.addNoteButton.innerHTML = '<i class="fas fa-plus"></i>Добавить заметку';
       }
     });
+    document.addEventListener('scroll', this.stickyHeader.bind(this));
   }
-
 
   showAddNoteForm() {
     // Закрытие формы при нажатии на клавишу esc
@@ -47,13 +52,13 @@ class NoteForm {
       if (e.keyCode == 27) {
         this.closeAddNoteForm();
       }
-    })
+    });
 
     this.updateBtn.style.display = "none";
     this.submitBtn.style.display = "none";
     this.addNotesForm.style.display = "block";
     this.description.focus();
-    document.body.style.overflow = "hidden";
+
     // Проверка заполнения при открытии
     if (this.description.value != "") {
       this.submitBtn.style.display = "block";
@@ -71,18 +76,35 @@ class NoteForm {
         }
       }));
     }
-
   }
 
   closeAddNoteForm() {
     this.addNotesForm.style.display = "none";
-    // this.arrayOfInputs.forEach((e) => e.removeEventListener("input", this.showAddNoteListener));
   }
 
   closeUpdateNoteForm() {
     this.updateNotesForm.style.display = "none";
   }
-}
 
+  stickyHeader() {
+    let headerHeight = this.header.offsetHeight;
+    let sticky = this.header.offsetTop;
+    let body = document.querySelector('.main');
+
+    if (window.pageYOffset > sticky){ 
+      this.header.classList.add('fixed');
+      body.style.paddingTop = `${headerHeight}px`;
+      this.header.style.boxShadow = '0px 0px 4px rgba(0, 0, 0, 0.2)';
+      this.header.style.paddingTop = '4px';
+      this.header.style.paddingBottom = '4px';
+    } else {
+      this.header.classList.remove('fixed');
+      body.style.paddingTop = `0px`;
+      this.header.style.boxShadow = 'none';
+      this.header.style.paddingTop = '10px';
+      this.header.style.paddingBottom = '10px';
+    }
+  }
+}
 
 const noteForm = new NoteForm();

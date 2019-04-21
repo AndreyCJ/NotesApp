@@ -7,20 +7,21 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/main.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <title>TodoApp</title>
 </head>
 
 <body>
   <section class="add-notes">
     <div class="add-notes-bg">
-      <div class="add-notes-container"> 
+      <div class="add-notes-container">
         <div class="addNoteTitle">
-          <input id="addNoteTitle" type="text" req placeholder="Заголовок (не обязательно)">   
-        </div>  
+          <input id="addNoteTitle" type="text" req placeholder="Заголовок (не обязательно)">
+        </div>
         <div class="addNoteDescription">
-          <textarea name="addNoteDescription" cols="30" rows="10" id="addNoteDescription" placeholder="Заметка..." required></textarea>
+          <textarea name="addNoteDescription" cols="30" rows="10" id="addNoteDescription" placeholder="Заметка..."
+            required></textarea>
         </div>
         <div class="addNoteFunctions">
           <div class="leftButtons">
@@ -34,17 +35,18 @@
             </button>
           </div>
         </div>
-    </div>    
+      </div>
   </section>
 
   <section class="update-notes">
     <div class="add-notes-bg">
-      <div class="add-notes-container"> 
+      <div class="add-notes-container">
         <div class="addNoteTitle">
-          <input id="updateNoteTitle" type="text" req placeholder="Заголовок">   
-        </div>  
+          <input id="updateNoteTitle" type="text" req placeholder="Заголовок">
+        </div>
         <div class="addNoteDescription">
-          <textarea name="updateNoteDescription" cols="30" rows="10" id="updateNoteDescription" placeholder="Заметка..." required></textarea>
+          <textarea name="updateNoteDescription" cols="30" rows="10" id="updateNoteDescription" placeholder="Заметка..."
+            required></textarea>
         </div>
         <div class="addNoteFunctions">
           <div class="leftButtons">
@@ -58,17 +60,17 @@
             </button>
           </div>
         </div>
-    </div>    
+      </div>
   </section>
 
   <header>
     <div class="container">
       <div class="left-side">
-        <div class="header-item">
+        <!-- <div class="header-item">
           <div class="open-menu-button">
             <i class="fas fa-bars" id="openMenuBtn"></i>
           </div>
-        </div>
+        </div> -->
 
         <div class="header-item">
           <div class="logo">
@@ -78,7 +80,7 @@
           </div>
         </div>
 
-        <div class="header-item">
+        <!-- <div class="header-item">
           <div class="search">
             <div class="search-left">
               <div class="btn">
@@ -93,8 +95,8 @@
                 <i class="fas fa-times"></i>
               </div>
             </div>
-          </div>
-        </div>
+          </div> 
+        </div>-->
       </div>
 
       <div class="right-side">
@@ -104,14 +106,14 @@
             Добавить заметку
           </button>
         </div>
-        
-        <div class="header-item profile_div">
+
+        <!-- <div class="header-item profile_div">
           <div class="profile">
             <a href="#">
               <img src="img/profile-photo.png">
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
 
     </div>

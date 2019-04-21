@@ -7,7 +7,6 @@ class Notes {
     this.title = document.getElementById('addNoteTitle');
     this.submitBtn = document.querySelector('button#submitNoteBtn');
     this.notesContainer = document.querySelector('ul.list-notes');    
-    this.addNotesForm = document.querySelector('section.add-notes');
     this.blank = document.querySelector('.blank');
     this.mockData;
 
@@ -33,25 +32,31 @@ class Notes {
     this.events();
 
     // Кнопки на заметках 
-    document.addEventListener('click', event => {
-      console.log(event.target);
+    document.addEventListener('mousedown', event => {
       if (event.target.classList.contains('fa-ellipsis-v')){
         this.openMoreInfo(event);
       } else {
         this.closeMoreInfo();
       }
+
+      // console.log(event.target.parentNode.className);
       
       if(event.target.classList.contains('deleteBtn')){
         this.remove(event, 'deleteData.php', this.request);
-      }else if(event.target.parentElement.classList.contains('note') || event.target.parentElement.classList.contains('content')){ //event.target.classList.contains('editBtn')
-        this.showUpdateNoteForm(event);
       } else if(event.target.classList.contains('add-notes-bg')) {
         this.closeUpdateNoteForm();
+      } 
+      
+      if(event.target.parentNode.className == 'note' || event.target.parentNode.className == 'content'){
+        this.showUpdateNoteForm(event);
       }
-
 
       if(event.target.id == 'completeBtn') {
         this.noteComplete(event);
+      }
+
+      if (event.target.id == 'updateNoteBtn') {
+        this.update('updateData.php', this.request, event);
       }
     })
   }
@@ -90,11 +95,9 @@ class Notes {
     
     request.onreadystatechange = () => {
       if(request.readyState == 4 && request.status == 200) {
-
         this.mockData = JSON.parse(request.responseText);
-
         console.log(this.mockData);
-
+        
         if(this.mockData.length > 0) {
           if (isInserted == 'Successfully Inserted') { // Прорисовка заметок при добавлении заметки
             if (document.querySelector('section.notes').querySelector('.blank') !== null){
@@ -108,11 +111,11 @@ class Notes {
               // this.edit.setAttribute('has-title', 'hasTitle');
               this.content.insertBefore(this.noteHeader, this.content.children[0]);
               this.noteHeader.insertAdjacentText('afterbegin', lastNote.todoTitle);
-              this.noteDescription.insertAdjacentText('afterbegin', lastNote.todoDescription);
+              this.noteDescription.insertAdjacentText('afterbegin', lastNote.todoDescription.replace(/(\r\n|\n|\r)/gm, "<br>"));
               this.notesContainer.appendChild(this.li);
               isInserted = '';
             } else {
-              this.noteDescription.insertAdjacentText('afterbegin', lastNote.todoDescription);
+              this.noteDescription.insertAdjacentText('afterbegin', lastNote.todoDescription.replace(/(\r\n|\n|\r)/gm, "<br>"));
               this.notesContainer.appendChild(this.li);
               isInserted = '';
             }
@@ -128,6 +131,7 @@ class Notes {
             this.allItems = document.getElementsByClassName("note");
             this.resizeAllGridItems();
           } else { // Прорисовка заметок при обновлении страници
+            this.notesContainer.innerHTML = '';
             if (document.querySelector('section.notes').querySelector('.blank') !== null){
               document.querySelector('section.notes').querySelector('.blank').remove();
             }
@@ -139,10 +143,10 @@ class Notes {
                 // this.edit.setAttribute('has-title', 'hasTitle');
                 this.content.insertBefore(this.noteHeader, this.content.children[0]);
                 this.noteHeader.insertAdjacentText('afterbegin', item.todoTitle);
-                this.noteDescription.insertAdjacentText('afterbegin', item.todoDescription);
+                this.noteDescription.insertAdjacentHTML('afterbegin', item.todoDescription.replace(/(\r\n|\n|\r)/gm, "<br>"));
                 this.notesContainer.appendChild(this.li);
               } else {
-                this.noteDescription.insertAdjacentText('afterbegin', item.todoDescription);
+                this.noteDescription.insertAdjacentHTML('afterbegin', item.todoDescription.replace(/(\r\n|\n|\r)/gm, "<br>"));
                 this.notesContainer.appendChild(this.li);
               }
 
@@ -216,6 +220,7 @@ class Notes {
 
 
     this.deleteItem.setAttribute('data-id', id);
+    this.updateBtn.setAttribute('data-id', id);
     // this.edit.setAttribute('data-id', id);
     this.doneBtn.setAttribute('data-id', id);
     this.doneBtn.setAttribute('complete', done);
@@ -242,6 +247,8 @@ class Notes {
   insertData(url, request) {
     let titleData = this.title.value;
     let descriptionData = this.description.value;
+
+    console.log(descriptionData);
     
     let formData = new FormData();
     
@@ -250,11 +257,12 @@ class Notes {
 
     request.onreadystatechange = () => {
       if (request.readyState == 4) {
-        this.getData('getData.php', this.request, JSON.parse(request.responseText));
+        this.getData('getData.php', this.request); //JSON.parse(request.responseText)
         this.submitBtn.style.display = "none";
         this.title.value = '';
         this.description.value = '';
       }
+      // console.log(JSON.parse(request.responseText))
     }
 
     request.open('POST', url, true);
@@ -281,6 +289,12 @@ class Notes {
         let parentOfTargetId = event.target.closest('.note');
         this.notesContainer.removeChild(parentOfTargetId);
         console.log(JSON.parse(request.responseText));
+        if (this.mockData.length <= 0) {
+          let blank = document.createElement('div');
+          blank.classList.add('blank');
+          blank.innerHTML = 'У вас нету заметок...';
+          document.querySelector('section.notes').appendChild(blank);
+        }
       }
     }
 
@@ -291,7 +305,37 @@ class Notes {
     request.send(formData);
   }
 
-  update(formData, url, request) {
+  update(url, request, event) {
+    console.log('this is my id: '+ event.target.getAttribute('data-id'));
+    let formData = new FormData();
+    formData.append("newTitle", document.querySelector('#updateNoteTitle').value);
+    formData.append("newDescription", document.querySelector('#updateNoteDescription').value);
+    formData.append("id", event.target.getAttribute('data-id'));
+
+    // Комментарии для дебагинга
+    // console.log(this.updateTitle.value+' this is from button with header');
+    // console.log(this.updateDescription.value+' this is from button with header');
+    // console.log(this.hasHeader);
+    
+    if (this.updateTitle.value != '' && this.hasHeader != null) {
+      this.note.querySelector('.note-header').innerHTML = this.updateTitle.value;
+      this.note.querySelector('p').innerHTML = this.updateDescription.value;
+      this.resizeAllGridItems();
+    } else if(this.updateTitle.value == '' && this.hasHeader != null){
+      this.note.querySelector('.note-header').remove();
+      this.note.querySelector('p').innerHTML = this.updateDescription.value;
+      this.resizeAllGridItems();
+    } else if(this.hasHeader == null && this.updateTitle.value == '') {
+      this.note.querySelector('p').innerHTML = this.updateDescription.value;
+      this.resizeAllGridItems();
+    } else if(this.hasHeader == null && this.updateTitle.value != '') {
+      this.noteHeader.innerHTML = this.updateTitle.value;
+      this.note.insertBefore(this.noteHeader, this.note.children[0]);
+      this.note.querySelector('p').innerHTML = this.updateDescription.value;
+      this.resizeAllGridItems();
+    }
+  
+    
     request.onreadystatechange = () => {
       if (request.readyState == 4) {
         console.log(JSON.parse(request.responseText));
@@ -308,7 +352,7 @@ class Notes {
       if (e.keyCode == 27) {
         this.closeUpdateNoteForm();
       }
-    })
+    });
 
     this.updateBtn.style.display = "none";
     this.theEvent = event;
@@ -317,11 +361,8 @@ class Notes {
     this.hasHeader = this.note.querySelector('.note-header');
     // let targetId = event.target.getAttribute('data-id');
 
-
-    
     this.updateNotesForm.style.display = "block";
     this.updateDescription.focus();
-    document.body.style.overflow = "hidden";
     if(event.target.hasAttribute('has-title')) {
       this.oldTitle = event.target.closest('.note').querySelector('.note-header').innerHTML;
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
@@ -349,7 +390,6 @@ class Notes {
             } else {
               this.updateBtn.style.display = "none";
             }
-  
         });
     } else {
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
@@ -372,42 +412,7 @@ class Notes {
             this.updateBtn.style.display = "none";
           }
         });
-      
     }
-
-    this.updateBtn.onclick = () => {
-      let formData = new FormData();
-      formData.append("newTitle", this.updateTitle.value);
-      formData.append("newDescription", this.updateDescription.value);
-      formData.append("id", this.theTargetId);
-        
-      this.update(formData, 'updateData.php', this.request);
-
-      // Комментарии для дебагинга
-      // console.log(this.updateTitle.value+' this is from button with header');
-      // console.log(this.updateDescription.value+' this is from button with header');
-      // console.log(this.hasHeader);
-
-      if (this.updateTitle.value != '' && this.hasHeader != null) {
-        this.note.querySelector('.note-header').innerHTML = this.updateTitle.value;
-        this.note.querySelector('p').innerHTML = this.updateDescription.value;
-        this.resizeAllGridItems();
-      } else if(this.updateTitle.value == '' && this.hasHeader != null){
-        this.note.querySelector('.note-header').remove();
-        this.note.querySelector('p').innerHTML = this.updateDescription.value;
-        this.resizeAllGridItems();
-      } else if(this.hasHeader == null && this.updateTitle.value == '') {
-        this.note.querySelector('p').innerHTML = this.updateDescription.value;
-        this.resizeAllGridItems();
-      } else if(this.hasHeader == null && this.updateTitle.value != '') {
-        this.noteHeader.innerHTML = this.updateTitle.value;
-        this.note.insertBefore(this.noteHeader, this.note.children[0]);
-        this.note.querySelector('p').innerHTML = this.updateDescription.value;
-        this.resizeAllGridItems();
-      }
-
-    }
-
   }
 
   noteComplete(event) {
@@ -425,7 +430,6 @@ class Notes {
 
     this.request.onreadystatechange = () => {
       if(this.request.readyState == 4) {
-        
         console.log(JSON.parse(this.request.responseText))
       }
     }
@@ -445,14 +449,10 @@ class Notes {
     } 
   }
 
-
   closeUpdateNoteForm() {
     this.updateNotesForm.style.display = "none";
     this.updateBtn.style.display = "none";
-    // this.addNotesForm.removeEventListener("keyup", this.updateListener.bind(this));
   }
 }
-
-
 
 const newNotes = new Notes();
