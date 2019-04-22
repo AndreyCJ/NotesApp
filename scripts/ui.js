@@ -95,14 +95,10 @@ class NoteForm {
       this.header.classList.add('fixed');
       body.style.paddingTop = `${headerHeight}px`;
       this.header.style.boxShadow = '0px 0px 4px rgba(0, 0, 0, 0.2)';
-      // this.header.style.paddingTop = '4px';
-      // this.header.style.paddingBottom = '4px';
     } else {
       this.header.classList.remove('fixed');
       body.style.paddingTop = `0px`;
       this.header.style.boxShadow = 'none';
-      // this.header.style.paddingTop = '6px';
-      // this.header.style.paddingBottom = '6px';
     }
   }
 }

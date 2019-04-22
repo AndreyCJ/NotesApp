@@ -20,7 +20,7 @@
           <input id="addNoteTitle" type="text" req placeholder="Заголовок (не обязательно)">
         </div>
         <div class="addNoteDescription">
-          <textarea name="addNoteDescription" cols="30" rows="10" id="addNoteDescription" placeholder="Заметка..."
+          <textarea name="addNoteDescription" id="addNoteDescription" placeholder="Заметка..."
             required></textarea>
         </div>
         <div class="addNoteFunctions">
@@ -45,7 +45,7 @@
           <input id="updateNoteTitle" type="text" req placeholder="Заголовок">
         </div>
         <div class="addNoteDescription">
-          <textarea name="updateNoteDescription" cols="30" rows="10" id="updateNoteDescription" placeholder="Заметка..."
+          <textarea name="updateNoteDescription" id="updateNoteDescription" placeholder="Заметка..."
             required></textarea>
         </div>
         <div class="addNoteFunctions">
