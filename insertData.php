@@ -14,14 +14,8 @@ class insertData {
     $db["connect"];
     $table = $db["table"];
 
-    
-    $description = $_POST['descriptionData'];
-
-    // $descripArr = explode("\n", $description);
-
-    // echo json_encode($description."<- this is description");
-
-    if (empty($_POST['titleData'])) {
+    if ($_POST['titleData'] == "") {
+      $description = $_POST['descriptionData'];
       $query = "INSERT INTO $table (todoDescription) values ('$description')";
       if (mysqli_query($db["connect"], $query)) {
         echo json_encode("Successfully Inserted");
@@ -32,10 +26,8 @@ class insertData {
       }
     } else {
       $title = $_POST['titleData'];
+      $description = $_POST['descriptionData'];
       $query = "INSERT INTO $table (todoTitle, todoDescription) values ('$title', '$description')";
-      // foreach($descripArr as $line) {
-      //   $query = "INSERT INTO $table (todoDescription) values ('".$line."')";
-      // }
       if (mysqli_query($db["connect"], $query)) {
         echo json_encode("Successfully Inserted");
         mysqli_close($db["connect"]);
