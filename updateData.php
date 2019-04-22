@@ -16,13 +16,13 @@ class updateData {
 
 
     // $title = $_POST['newTitle'];
-    $description = $_POST['newDescription'];
-    $id = $_POST['id'];
+    
 
-    // echo json_encode($descriptio);
-
-    if (!empty($_POST['newTitle'])) {
+    if ($_POST['newTitle'] != "") {
       $title = $_POST['newTitle'];
+      $description = $_POST['newDescription'];
+      $id = $_POST['id'];
+      // echo json_encode($title);
       $query = "UPDATE $table SET todoTitle='$title', todoDescription='$description' WHERE id=$id";
       if (mysqli_query($db["connect"], $query)) {
         echo json_encode("Successfully Updated");
@@ -32,6 +32,8 @@ class updateData {
         mysqli_close($db["connect"]);
       }
     } else {
+      $description = $_POST['newDescription'];
+      $id = $_POST['id'];
       $query = "UPDATE $table SET todoTitle='', todoDescription='$description' WHERE id=$id";
       if (mysqli_query($db["connect"], $query)) {
         echo json_encode("Successfully Updated");

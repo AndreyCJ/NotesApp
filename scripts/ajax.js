@@ -48,7 +48,7 @@ class Notes {
       } 
       
       if(event.target.parentNode.className == 'note' || event.target.parentNode.className == 'content'){
-        this.showUpdateNoteForm(event);
+        this.showUpdateNoteForm(event, event.target.parentElement.getAttribute('data-id'));
       }
 
       if(event.target.id == 'completeBtn') {
@@ -108,7 +108,8 @@ class Notes {
             this.createDomElements(lastNote.id, lastNote.done);
 
             if (lastNote.todoTitle != '') {
-              // this.edit.setAttribute('has-title', 'hasTitle');
+              this.li.setAttribute('has-title', 'hasTitle');
+              this.content.setAttribute('has-title', 'hasTitle');
               this.content.insertBefore(this.noteHeader, this.content.children[0]);
               this.noteHeader.insertAdjacentText('afterbegin', lastNote.todoTitle);
               this.noteDescription.insertAdjacentText('afterbegin', lastNote.todoDescription.replace(/(\r\n|\n|\r)/gm, "<br>"));
@@ -140,7 +141,8 @@ class Notes {
               this.createDomElements(item.id, item.done);
 
               if (item.todoTitle != '') {
-                // this.edit.setAttribute('has-title', 'hasTitle');
+                this.li.setAttribute('has-title', 'hasTitle');
+                this.content.setAttribute('has-title', 'hasTitle');
                 this.content.insertBefore(this.noteHeader, this.content.children[0]);
                 this.noteHeader.insertAdjacentText('afterbegin', item.todoTitle);
                 this.noteDescription.insertAdjacentHTML('afterbegin', item.todoDescription.replace(/(\r\n|\n|\r)/gm, "<br>"));
@@ -219,8 +221,10 @@ class Notes {
     this.deleteItem.classList.add('deleteBtn');
 
 
+    this.li.setAttribute('data-id', id);
+    this.content.setAttribute('data-id', id);
     this.deleteItem.setAttribute('data-id', id);
-    this.updateBtn.setAttribute('data-id', id);
+    // this.updateBtn.setAttribute('data-id', id);
     // this.edit.setAttribute('data-id', id);
     this.doneBtn.setAttribute('data-id', id);
     this.doneBtn.setAttribute('complete', done);
@@ -307,6 +311,7 @@ class Notes {
 
   update(url, request, event) {
     console.log('this is my id: '+ event.target.getAttribute('data-id'));
+    // console.log("this is from update function: " + document.querySelector('#updateNoteTitle').value);
     let formData = new FormData();
     formData.append("newTitle", document.querySelector('#updateNoteTitle').value);
     formData.append("newDescription", document.querySelector('#updateNoteDescription').value);
@@ -346,7 +351,7 @@ class Notes {
     request.send(formData);
   }
 
-  showUpdateNoteForm(event) {
+  showUpdateNoteForm(event, id) {
     // Закрытие формы при нажатии на клавишу esc
     document.addEventListener('keyup', (e) => {
       if (e.keyCode == 27) {
@@ -354,16 +359,21 @@ class Notes {
       }
     });
 
+    console.log("this is from show update Form id = ", id);
+
+    this.updateBtn.setAttribute('data-id', id);
     this.updateBtn.style.display = "none";
     this.theEvent = event;
-    this.theTargetId = event.target.getAttribute('data-id');
+    this.theTargetId = id;
     this.note = this.theEvent.target.closest('.content');
     this.hasHeader = this.note.querySelector('.note-header');
     // let targetId = event.target.getAttribute('data-id');
 
+    console.log(this.hasHeader);
+
     this.updateNotesForm.style.display = "block";
     this.updateDescription.focus();
-    if(event.target.hasAttribute('has-title')) {
+    if(event.target.parentNode.hasAttribute('has-title')) {
       this.oldTitle = event.target.closest('.note').querySelector('.note-header').innerHTML;
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
       this.newTitle;
@@ -372,25 +382,25 @@ class Notes {
       this.updateTitle.value = this.oldTitle;
       this.updateDescription.value = this.oldDescription;
 
-        this.updateNotesForm.addEventListener('keyup', () => {
-          console.log(this.updateDescription);
-            if (this.updateDescription.value == '') {
-              this.updateBtn.style.display = "none";
+      this.updateNotesForm.addEventListener('keyup', () => {
+        console.log(this.updateDescription);
+          if (this.updateDescription.value == '') {
+            this.updateBtn.style.display = "none";
+          }
+          if(this.oldTitle != this.updateTitle.value || this.oldDescription != this.updateDescription.value) {
+            if(this.oldTitle != this.updateTitle.value) {
+              this.newTitle = this.updateTitle.value;
+              // console.log(this.newTitle);
+            } else if(this.oldDescription != this.updateDescription.value) {
+              this.newDescription = this.updateDescription.value;
+              // console.log(this.newDescription);
             }
-            if(this.oldTitle != this.updateTitle.value || this.oldDescription != this.updateDescription.value) {
-              if(this.oldTitle != this.updateTitle.value) {
-                this.newTitle = this.updateTitle.value;
-                // console.log(this.newTitle);
-              } else if(this.oldDescription != this.updateDescription.value) {
-                this.newDescription = this.updateDescription.value;
-                // console.log(this.newDescription);
-              }
-              // console.log(this.updateDescription+"this is from != ''")
-              this.updateBtn.style.display = "block";
-            } else {
-              this.updateBtn.style.display = "none";
-            }
-        });
+            // console.log(this.updateDescription+"this is from != ''")
+            this.updateBtn.style.display = "block";
+          } else {
+            this.updateBtn.style.display = "none";
+          }
+      });
     } else {
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
       this.oldTitle = this.updateTitle.value;
