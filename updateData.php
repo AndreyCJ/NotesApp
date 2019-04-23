@@ -14,10 +14,6 @@ class updateData {
     $db["connect"];
     $table = $db["table"];
 
-
-    // $title = $_POST['newTitle'];
-    
-
     if ($_POST['newTitle'] != "") {
       $title = $_POST['newTitle'];
       $description = $_POST['newDescription'];
@@ -43,28 +39,6 @@ class updateData {
         mysqli_close($db["connect"]);
       }
     }
-
-    // if(!empty($_POST['newTitle']) || $_POST['newTitle'] != '' || $_POST['newTitle'] != 0 || !empty($_POST['newDescription']) || $_POST['newDescription'] != '' ) {
-    //   $title = $_POST['newTitle'];
-    //   $query = "UPDATE $table SET todoTitle='$title', todoDescription='$description' WHERE id='$id'";
-    //   if (mysqli_query($db["connect"], $query)) {
-    //     echo json_encode("Successfully Updated");
-    //     mysqli_close($db["connect"]);
-    //   } else {
-    //     echo json_encode("Update Failed\n".$query);
-    //     mysqli_close($db["connect"]);
-    //   }
-    // } else {
-    //   $query = "UPDATE $table SET todoTitle='', todoDescription='$description' WHERE id='$id'";
-    //   if (mysqli_query($db["connect"], $query)) {
-    //     echo json_encode("Successfully Updated");
-    //     mysqli_close($db["connect"]);
-    //   } else {
-    //     echo json_encode("Update Failed\n".$query);
-    //     mysqli_close($db["connect"]);
-    //   }
-    // }
-    
   }
 }
 

@@ -14,12 +14,9 @@ class noteComplete {
     $db["connect"];
     $table = $db["table"];
 
-
     // $title = $_POST['titleData'];
     $done = $_POST['done'];
     $id = $_POST['id'];
-
-    
 
     if($done == 1) {
       $query = "UPDATE $table SET done='1' WHERE id=$id";

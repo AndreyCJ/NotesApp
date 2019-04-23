@@ -29,8 +29,6 @@ class getData {
     // Закрытие соединения с БД
     mysqli_close($db["connect"]);
   }
-
-  
 }
 
 $getTheData = new getData();

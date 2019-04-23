@@ -1,7 +1,6 @@
 class Notes {
   constructor() {
-    this.request = new XMLHttpRequest();
-    
+    this.request = new XMLHttpRequest();  
     // UI для вставки данных
     this.description = document.getElementById('addNoteDescription');
     this.title = document.getElementById('addNoteTitle');
@@ -38,8 +37,6 @@ class Notes {
       } else {
         this.closeMoreInfo();
       }
-
-      // console.log(event.target.parentNode.className);
       
       if(event.target.classList.contains('deleteBtn')){
         this.remove(event, 'deleteData.php', this.request);
@@ -217,20 +214,16 @@ class Notes {
     this.moreOptionsContainer.classList.add('more-info');
     this.moreOptionsBtn.classList.add('fas');
     this.moreOptionsBtn.classList.add('fa-ellipsis-v');
-    // this.edit.classList.add('editBtn');
     this.deleteItem.classList.add('deleteBtn');
 
 
     this.li.setAttribute('data-id', id);
     this.content.setAttribute('data-id', id);
     this.deleteItem.setAttribute('data-id', id);
-    // this.updateBtn.setAttribute('data-id', id);
-    // this.edit.setAttribute('data-id', id);
     this.doneBtn.setAttribute('data-id', id);
     this.doneBtn.setAttribute('complete', done);
     this.doneBtn.id = "completeBtn";
 
-    // this.edit.innerHTML = 'Изменить';
     this.deleteItem.innerHTML = 'Удалить';
 
     // Доабвление DOM елементов
@@ -244,7 +237,6 @@ class Notes {
     this.doneBtnContainer.appendChild(this.doneBtn);
     this.moreOptionsContainer.appendChild(this.moreOptionsBtn);
     this.moreOptionsContainer.appendChild(this.moreOptionsList);
-    // this.moreOptionsList.appendChild(this.edit);
     this.moreOptionsList.appendChild(this.deleteItem);
   }
 
@@ -266,7 +258,6 @@ class Notes {
         this.title.value = '';
         this.description.value = '';
       }
-      // console.log(JSON.parse(request.responseText))
     }
 
     request.open('POST', url, true);
@@ -310,8 +301,6 @@ class Notes {
   }
 
   update(url, request, event) {
-    console.log('this is my id: '+ event.target.getAttribute('data-id'));
-    // console.log("this is from update function: " + document.querySelector('#updateNoteTitle').value);
     let formData = new FormData();
     formData.append("newTitle", document.querySelector('#updateNoteTitle').value);
     formData.append("newDescription", document.querySelector('#updateNoteDescription').value);
