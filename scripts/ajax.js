@@ -253,10 +253,13 @@ class Notes {
 
     request.onreadystatechange = () => {
       if (request.readyState == 4) {
+        console.log(this.request.responseText);
+        throwMessage.show(this.request.responseText.replace(/"/g, ''));
         this.getData('getData.php', this.request); //JSON.parse(request.responseText)
         this.submitBtn.style.display = "none";
         this.title.value = '';
         this.description.value = '';
+        
       }
     }
 
@@ -290,6 +293,7 @@ class Notes {
           blank.innerHTML = 'У вас нету заметок...';
           document.querySelector('section.notes').appendChild(blank);
         }
+        throwMessage.show(this.request.responseText.replace(/"/g, ''));
       }
     }
 
@@ -333,6 +337,7 @@ class Notes {
     request.onreadystatechange = () => {
       if (request.readyState == 4) {
         console.log(JSON.parse(request.responseText));
+        throwMessage.show(this.request.responseText.replace(/"/g, ''));
         this.closeUpdateNoteForm();
       }
     }
@@ -432,7 +437,8 @@ class Notes {
 
     this.request.onreadystatechange = () => {
       if(this.request.readyState == 4) {
-        console.log(JSON.parse(this.request.responseText))
+        console.log(JSON.parse(this.request.responseText));
+        throwMessage.show(this.request.responseText.replace(/"/g, ''));
       }
     }
 
@@ -456,5 +462,59 @@ class Notes {
     this.updateBtn.style.display = "none";
   }
 }
+
+class AlertBox {
+  constructor(id, option) {
+    this.id = id;
+    this.option = option;
+  }
+  show (msg) {
+    if (msg === ''  || typeof msg === 'undefined' || msg === null) {
+      throw '"msg parameter is empty"';
+    }
+    else {
+      let alertArea = document.querySelector(this.id);
+      let alertBox = document.createElement('DIV');
+      let alertContent = document.createElement('DIV');
+      let alertClose = document.createElement('A');
+      let alertClass = this;
+      alertContent.classList.add('alert-content');
+      alertContent.innerText = msg;
+      alertClose.classList.add('alert-close');
+      alertClose.setAttribute('href', '#');
+      alertBox.classList.add('alert-box');
+      alertBox.appendChild(alertContent);
+      if (!this.option.hideCloseButton || typeof this.option.hideCloseButton === 'undefined') {
+        alertBox.appendChild(alertClose);
+      }
+      alertArea.appendChild(alertBox);
+      alertClose.addEventListener('click', function(event) {
+        event.preventDefault();
+        alertClass.hide(alertBox);
+      });
+      if (!this.option.persistent) {
+        let alertTimeout = setTimeout(function() {
+          alertClass.hide(alertBox);
+          clearTimeout(alertTimeout);
+        }, this.option.closeTime);
+      }
+    }
+  };
+
+  hide (alertBox) {
+    alertBox.classList.add('hide');
+    let disperseTimeout = setTimeout(function() {
+      alertBox.parentNode.removeChild(alertBox);
+      clearTimeout(disperseTimeout);
+    }, 500);
+  };
+};
+
+const throwMessage = new AlertBox('#alert-area', {
+  closeTime: 2000,
+  persistent: false,
+  hideCloseButton: false
+});
+
 
 const newNotes = new Notes();

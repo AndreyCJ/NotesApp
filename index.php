@@ -124,6 +124,7 @@
     <section class="notes">
       <ul class="list-notes"></ul>
     </section>
+    <div id="alert-area" class="alert-area"></div>
   </section>
 
 </body>

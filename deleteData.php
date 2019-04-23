@@ -22,10 +22,10 @@ class deleteData {
     $query = "DELETE FROM $table WHERE id=$itemId";
 
     if (mysqli_query($db["connect"], $query)) {
-      echo json_encode("Note was successfully deleted");
+      echo json_encode("Запись удалена", JSON_UNESCAPED_UNICODE);
       mysqli_close($db["connect"]);
     } else {
-      echo json_encode("Delete failed\n".$query);
+      echo json_encode("Ошибка при удалении записи\n".$query, JSON_UNESCAPED_UNICODE);
       mysqli_close($db["connect"]);
     }
   }

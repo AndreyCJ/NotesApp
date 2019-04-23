@@ -18,10 +18,10 @@ class insertData {
       $description = $_POST['descriptionData'];
       $query = "INSERT INTO $table (todoDescription) values ('$description')";
       if (mysqli_query($db["connect"], $query)) {
-        echo json_encode("Successfully Inserted");
+        echo json_encode("Запись добавлена", JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       } else {
-        echo json_encode("Insertion Failed\n".$query);
+        echo json_encode("Ошибка при добавлении записи\n".$query, JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       }
     } else {
@@ -29,10 +29,10 @@ class insertData {
       $description = $_POST['descriptionData'];
       $query = "INSERT INTO $table (todoTitle, todoDescription) values ('$title', '$description')";
       if (mysqli_query($db["connect"], $query)) {
-        echo json_encode("Successfully Inserted");
+        echo json_encode("Запись добавлена", JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       } else {
-        echo json_encode("Insertion Failed\n".$query);
+        echo json_encode("Ошибка при добавлении записи\n".$query, JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       }
     }

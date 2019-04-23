@@ -21,19 +21,19 @@ class noteComplete {
     if($done == 1) {
       $query = "UPDATE $table SET done='1' WHERE id=$id";
       if (mysqli_query($db["connect"], $query)) {
-        echo json_encode("Successfully Updated");
+        echo json_encode("Помечено как выполненное", JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       } else {
-        echo json_encode("Update Failed\n".$query);
+        echo json_encode("Ошибка при выполнении\n".$query, JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       }
     } else {
       $query = "UPDATE $table SET done='0' WHERE id=$id";
       if (mysqli_query($db["connect"], $query)) {
-        echo json_encode("Successfully Updated");
+        echo json_encode("Помечено как не выполненное", JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       } else {
-        echo json_encode("Update Failed\n".$query);
+        echo json_encode("Ошибка при выполнении\n".$query, JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       }
     }

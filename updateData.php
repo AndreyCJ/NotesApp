@@ -21,10 +21,10 @@ class updateData {
       // echo json_encode($title);
       $query = "UPDATE $table SET todoTitle='$title', todoDescription='$description' WHERE id=$id";
       if (mysqli_query($db["connect"], $query)) {
-        echo json_encode("Successfully Updated");
+        echo json_encode("Изменения сохранены", JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       } else {
-        echo json_encode("Update Failed\n".$query);
+        echo json_encode("Ошибка при сохранении изменений\n".$query, JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       }
     } else {
@@ -32,10 +32,10 @@ class updateData {
       $id = $_POST['id'];
       $query = "UPDATE $table SET todoTitle='', todoDescription='$description' WHERE id=$id";
       if (mysqli_query($db["connect"], $query)) {
-        echo json_encode("Successfully Updated");
+        echo json_encode("Изменения сохранены", JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       } else {
-        echo json_encode("Update Failed\n".$query);
+        echo json_encode("Ошибка при сохранении изменений\n".$query, JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       }
     }
