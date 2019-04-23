@@ -51,7 +51,7 @@
         <div class="addNoteFunctions">
           <div class="leftButtons">
             <button class="btn_big" id="updateNoteBtn">
-              Обновить
+              Сохранить
             </button>
           </div>
           <div class="rightButtons">

@@ -333,6 +333,7 @@ class Notes {
     request.onreadystatechange = () => {
       if (request.readyState == 4) {
         console.log(JSON.parse(request.responseText));
+        this.closeUpdateNoteForm();
       }
     }
 
@@ -364,6 +365,7 @@ class Notes {
     this.updateDescription.focus();
     if(event.target.parentNode.hasAttribute('has-title')) {
       this.oldTitle = event.target.closest('.note').querySelector('.note-header').innerHTML;
+      console.log(this.oldTitle);
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
       this.newTitle;
       this.newDescription;
@@ -391,6 +393,7 @@ class Notes {
           }
       });
     } else {
+      this.updateTitle.value = "";
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
       this.oldTitle = this.updateTitle.value;
       this.newTitle;
