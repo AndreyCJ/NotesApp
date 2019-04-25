@@ -24,7 +24,6 @@
   </div>
 </div>
 
-
   <section class="add-notes">
     <div class="add-notes-bg">
       <div class="add-notes-container">
@@ -132,7 +131,6 @@
   </header>
 
   <section class="main">
-
     <section class="notes">
       <ul class="list-notes"></ul>
     </section>

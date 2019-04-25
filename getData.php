@@ -26,6 +26,7 @@ class getData {
   
     // Возвращает ответ в JSON формате
     echo json_encode($data);
+    
     // Закрытие соединения с БД
     mysqli_close($db["connect"]);
   }

@@ -28,6 +28,7 @@ class Notes {
     this.action = 1;
 
     this.confirmBg = document.querySelector('.confirmBg');
+    this.confirmBox = document.querySelector('.confirmBox');
     this.confirmButtonTrue = document.querySelector('.confirmTrueBtn');
     this.confirmButtonFalse = document.querySelector('.confirmFalseBtn');
 
@@ -44,9 +45,7 @@ class Notes {
       
       if(event.target.classList.contains('deleteBtn')){
         this.remove(event, 'deleteData.php', this.request);
-       } //else if(event.target.classList.contains('add-notes-bg')) {
-      //   this.closeUpdateNoteForm();
-      // } 
+      }
       
       if(event.target.parentNode.className == 'note' || event.target.parentNode.className == 'content'){
         this.showUpdateNoteForm(event, event.target.parentElement.getAttribute('data-id'));
@@ -445,7 +444,7 @@ class Notes {
   }
 
   confirmExit() {
-    this.confirmBg.style.display = "block";
+    this.confirmBg.style.display = "flex";
   }
 
   noteComplete(event) {

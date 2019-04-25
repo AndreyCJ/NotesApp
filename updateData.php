@@ -8,7 +8,7 @@ class updateData {
   }
 
   public function update_data() {
-    // Соединение с базой final_todo
+    // Соединение с базой данных
     db_connection();
     global $db;
     $db["connect"];
@@ -16,7 +16,7 @@ class updateData {
 
     if ($_POST['newTitle'] != "") {
       $title = $_POST['newTitle'];
-      $description = $_POST['newDescription'];
+      $description = mysqli_real_escape_string($db["connect"], $_POST['newDescription']);
       $id = $_POST['id'];
       // echo json_encode($title);
       $query = "UPDATE $table SET todoTitle='$title', todoDescription='$description' WHERE id=$id";
@@ -28,7 +28,7 @@ class updateData {
         mysqli_close($db["connect"]);
       }
     } else {
-      $description = $_POST['newDescription'];
+      $description = mysqli_real_escape_string($db["connect"], $_POST['newDescription']);
       $id = $_POST['id'];
       $query = "UPDATE $table SET todoTitle='', todoDescription='$description' WHERE id=$id";
       if (mysqli_query($db["connect"], $query)) {

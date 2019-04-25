@@ -8,31 +8,31 @@ class insertData {
   }
 
   public function insert_data() {
-    // Соединение с базой final_todo
+    // Соединение с базой данных
     db_connection();
     global $db;
     $db["connect"];
     $table = $db["table"];
 
     if ($_POST['titleData'] == "") {
-      $description = $_POST['descriptionData'];
+      $description = mysqli_real_escape_string($db["connect"], $_POST['descriptionData']);
       $query = "INSERT INTO $table (todoDescription) values ('$description')";
       if (mysqli_query($db["connect"], $query)) {
         echo json_encode("Запись добавлена", JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       } else {
-        echo json_encode("Ошибка при добавлении записи\n".$query, JSON_UNESCAPED_UNICODE);
+        echo json_encode("Ошибка при добавлении записи\n ".$query, JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       }
     } else {
       $title = $_POST['titleData'];
-      $description = $_POST['descriptionData'];
+      $description = mysqli_real_escape_string($db["connect"], $_POST['descriptionData']);
       $query = "INSERT INTO $table (todoTitle, todoDescription) values ('$title', '$description')";
       if (mysqli_query($db["connect"], $query)) {
         echo json_encode("Запись добавлена", JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       } else {
-        echo json_encode("Ошибка при добавлении записи\n".$query, JSON_UNESCAPED_UNICODE);
+        echo json_encode("Ошибка при добавлении записи\n ".$query, JSON_UNESCAPED_UNICODE);
         mysqli_close($db["connect"]);
       }
     }
