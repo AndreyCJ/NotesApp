@@ -27,11 +27,15 @@ class Notes {
     this.completeBtn = document.querySelector('#completeBtn');
     this.action = 1;
 
+    this.confirmBg = document.querySelector('.confirmBg');
+    this.confirmButtonTrue = document.querySelector('.confirmTrueBtn');
+    this.confirmButtonFalse = document.querySelector('.confirmFalseBtn');
+
     this.getData('getData.php', this.request);
     this.events();
 
     // Кнопки на заметках 
-    document.addEventListener('mousedown', event => {
+    document.addEventListener('click', event => {
       if (event.target.classList.contains('fa-ellipsis-v')){
         this.openMoreInfo(event);
       } else {
@@ -40,9 +44,9 @@ class Notes {
       
       if(event.target.classList.contains('deleteBtn')){
         this.remove(event, 'deleteData.php', this.request);
-      } else if(event.target.classList.contains('add-notes-bg')) {
-        this.closeUpdateNoteForm();
-      } 
+       } //else if(event.target.classList.contains('add-notes-bg')) {
+      //   this.closeUpdateNoteForm();
+      // } 
       
       if(event.target.parentNode.className == 'note' || event.target.parentNode.className == 'content'){
         this.showUpdateNoteForm(event, event.target.parentElement.getAttribute('data-id'));
@@ -54,8 +58,8 @@ class Notes {
 
       if (event.target.id == 'updateNoteBtn') {
         this.update('updateData.php', this.request, event);
-      }
-    })
+      } 
+    });
   }
 
   events() {
@@ -63,6 +67,12 @@ class Notes {
     this.closeAddNoteButton.addEventListener('click', () => {
       this.title.value = '';
       this.description.value = '';
+    });
+    this.confirmButtonTrue.addEventListener('click', () => {
+      this.update('updateData.php', this.request)
+    });
+    this.confirmButtonFalse.addEventListener('click', () => {
+      this.closeUpdateNoteForm()
     });
   }
 
@@ -304,11 +314,13 @@ class Notes {
     request.send(formData);
   }
 
-  update(url, request, event) {
+  update(url, request) {
     let formData = new FormData();
     formData.append("newTitle", document.querySelector('#updateNoteTitle').value);
     formData.append("newDescription", document.querySelector('#updateNoteDescription').value);
-    formData.append("id", event.target.getAttribute('data-id'));
+    formData.append("id", this.updateNotesForm.getAttribute('data-id'));
+
+    console.log('this is from update function');
 
     // Комментарии для дебагинга
     // console.log(this.updateTitle.value+' this is from button with header');
@@ -347,30 +359,19 @@ class Notes {
   }
 
   showUpdateNoteForm(event, id) {
-    // Закрытие формы при нажатии на клавишу esc
-    document.addEventListener('keyup', (e) => {
-      if (e.keyCode == 27) {
-        this.closeUpdateNoteForm();
-      }
-    });
-
-    console.log("this is from show update Form id = ", id);
-
-    this.updateBtn.setAttribute('data-id', id);
+    this.updateNotesForm.setAttribute('data-id', id);
+    this.closeShowBtn = document.querySelector('#closeUpdateNoteBtn');
     this.updateBtn.style.display = "none";
     this.theEvent = event;
     this.theTargetId = id;
     this.note = this.theEvent.target.closest('.content');
     this.hasHeader = this.note.querySelector('.note-header');
-    // let targetId = event.target.getAttribute('data-id');
-
-    console.log(this.hasHeader);
 
     this.updateNotesForm.style.display = "block";
     this.updateDescription.focus();
     if(event.target.parentNode.hasAttribute('has-title')) {
       this.oldTitle = event.target.closest('.note').querySelector('.note-header').innerHTML;
-      console.log(this.oldTitle);
+      // console.log(this.oldTitle); Для деббагинга
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
       this.newTitle;
       this.newDescription;
@@ -378,8 +379,15 @@ class Notes {
       this.updateTitle.value = this.oldTitle;
       this.updateDescription.value = this.oldDescription;
 
-      this.updateNotesForm.addEventListener('keyup', () => {
-        console.log(this.updateDescription);
+      this.updateNotesForm.addEventListener('keyup', (e) => {
+        // console.log(this.updateDescription); Для деббагинга
+        if (e.keyCode == 27) {
+          if (this.updateBtn.style.display == 'block') {
+            this.confirmExit();
+          } else {
+            this.closeUpdateNoteForm();
+          }
+        }
           if (this.updateDescription.value == '') {
             this.updateBtn.style.display = "none";
           }
@@ -405,7 +413,14 @@ class Notes {
       this.newDescription; 
       this.updateDescription.value = this.oldDescription;
 
-        this.updateNotesForm.addEventListener('keyup', () => {
+        this.updateNotesForm.addEventListener('keyup', (e) => {
+          if (e.keyCode == 27) {
+            if (this.updateBtn.style.display == 'block') {
+              this.confirmExit();
+            } else {
+              this.closeUpdateNoteForm();
+            }
+          }
           if(this.oldTitle != this.updateTitle.value || this.oldDescription != this.updateDescription.value) {
             if(this.oldTitle != this.updateTitle.value) {
               this.newTitle = this.updateTitle.value;
@@ -420,6 +435,17 @@ class Notes {
           }
         });
     }
+    this.closeShowBtn.addEventListener('click', () => {
+      if (this.updateBtn.style.display == 'block') {
+        this.confirmExit();
+      } else {
+        this.closeUpdateNoteForm();
+      }
+    }); 
+  }
+
+  confirmExit() {
+    this.confirmBg.style.display = "block";
   }
 
   noteComplete(event) {
@@ -458,6 +484,7 @@ class Notes {
   }
 
   closeUpdateNoteForm() {
+    this.confirmBg.style.display = "none";
     this.updateNotesForm.style.display = "none";
     this.updateBtn.style.display = "none";
   }

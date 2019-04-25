@@ -13,6 +13,18 @@
 </head>
 
 <body>
+
+<div class="confirmBg">
+  <div class="confirmBox">
+    <p>Сохранить изменения?</p>
+    <div class="confirmButtonBox">
+      <button class="confirmTrueBtn">Да</button>
+      <button class="confirmFalseBtn">Нет</button>
+    </div>
+  </div>
+</div>
+
+
   <section class="add-notes">
     <div class="add-notes-bg">
       <div class="add-notes-container">

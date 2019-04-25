@@ -29,13 +29,13 @@ class NoteForm {
 
   events() {
     this.addNoteButton.addEventListener('click', this.showAddNoteForm.bind(this));
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('add-notes-bg')) {
-        this.closeAddNoteForm();
-      }
-    });
+    // document.addEventListener('click', (e) => {
+    //   if (e.target.classList.contains('add-notes-bg')) {
+    //     this.closeAddNoteForm();
+    //   }
+    // });
     this.closeAddNoteButton.addEventListener('click', this.closeAddNoteForm.bind(this));
-    this.closeUpdateNoteBtn.addEventListener('click', this.closeUpdateNoteForm.bind(this));
+    // this.closeUpdateNoteBtn.addEventListener('click', this.closeUpdateNoteForm.bind(this));
     window.addEventListener('resize', () => {
       if(window.innerWidth <= 790) {
         this.addNoteButton.innerHTML = '<i class="fas fa-plus"></i>';
@@ -82,9 +82,9 @@ class NoteForm {
     this.addNotesForm.style.display = "none";
   }
 
-  closeUpdateNoteForm() {
-    this.updateNotesForm.style.display = "none";
-  }
+  // closeUpdateNoteForm() {
+  //   this.updateNotesForm.style.display = "none";
+  // }
 
   stickyHeader() {
     let headerHeight = this.header.offsetHeight;
