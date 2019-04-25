@@ -9,7 +9,7 @@ class deleteData {
   }
 
   public function delte_data() {
-    // Соединение с базой final_todo
+    // Соединение с базой данных
     db_connection();
     global $db;
     $db["connect"];

@@ -8,13 +8,12 @@ class noteComplete {
   }
 
   public function note_complete() {
-    // Соединение с базой final_todo
+    // Соединение с базой данных
     db_connection();
     global $db;
     $db["connect"];
     $table = $db["table"];
 
-    // $title = $_POST['titleData'];
     $done = $_POST['done'];
     $id = $_POST['id'];
 

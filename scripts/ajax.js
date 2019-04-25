@@ -194,25 +194,18 @@ class Notes {
     // Создание DOM елементов
     this.li = document.createElement('li');
     this.content = document.createElement('div')
-
     this.noteHeader = document.createElement('div');
-
     this.noteDescription = document.createElement('p');
-
     this.noteMenu = document.createElement('div');
     this.doneBtnContainer = document.createElement('div');
     this.doneBtn = document.createElement('i');
 
-
     this.moreOptionsContainer = document.createElement('div');
     this.moreOptionsBtn = document.createElement('i');
     this.moreOptionsList = document.createElement('ul');
-
-    // this.edit = document.createElement('li');
     this.deleteItem = document.createElement('li');
 
     // Добавление классов
-
     this.li.classList.add('note');
     this.content.classList.add('content');
     this.noteHeader.classList.add('note-header');
@@ -225,7 +218,6 @@ class Notes {
     this.moreOptionsBtn.classList.add('fa-ellipsis-v');
     this.deleteItem.classList.add('deleteBtn');
 
-
     this.li.setAttribute('data-id', id);
     this.content.setAttribute('data-id', id);
     this.deleteItem.setAttribute('data-id', id);
@@ -236,7 +228,6 @@ class Notes {
     this.deleteItem.innerHTML = 'Удалить';
 
     // Доабвление DOM елементов
-
     this.li.appendChild(this.content);
     this.content.appendChild(this.noteDescription);
     this.content.appendChild(this.noteMenu);
@@ -268,13 +259,11 @@ class Notes {
         this.submitBtn.style.display = "none";
         this.title.value = '';
         this.description.value = '';
-        
       }
     }
 
     request.open('POST', url, true);
     request.send(formData);
-
   }
 
   openMoreInfo(event) {
@@ -286,7 +275,7 @@ class Notes {
   closeMoreInfo() {
     document.querySelectorAll('.more-info ul').forEach(e => {
       e.style.display = 'none';
-    })
+    });
   }
 
   remove(event, url, request) {
@@ -319,8 +308,6 @@ class Notes {
     formData.append("newDescription", document.querySelector('#updateNoteDescription').value);
     formData.append("id", this.updateNotesForm.getAttribute('data-id'));
 
-    console.log('this is from update function');
-
     // Комментарии для дебагинга
     // console.log(this.updateTitle.value+' this is from button with header');
     // console.log(this.updateDescription.value+' this is from button with header');
@@ -344,7 +331,6 @@ class Notes {
       this.resizeAllGridItems();
     }
   
-    
     request.onreadystatechange = () => {
       if (request.readyState == 4) {
         console.log(JSON.parse(request.responseText));
@@ -387,22 +373,22 @@ class Notes {
             this.closeUpdateNoteForm();
           }
         }
-          if (this.updateDescription.value == '') {
-            this.updateBtn.style.display = "none";
+        if (this.updateDescription.value == '') {
+          this.updateBtn.style.display = "none";
+        }
+        if(this.oldTitle != this.updateTitle.value || this.oldDescription != this.updateDescription.value) {
+          if(this.oldTitle != this.updateTitle.value) {
+            this.newTitle = this.updateTitle.value;
+            // console.log(this.newTitle);
+          } else if(this.oldDescription != this.updateDescription.value) {
+            this.newDescription = this.updateDescription.value;
+            // console.log(this.newDescription);
           }
-          if(this.oldTitle != this.updateTitle.value || this.oldDescription != this.updateDescription.value) {
-            if(this.oldTitle != this.updateTitle.value) {
-              this.newTitle = this.updateTitle.value;
-              // console.log(this.newTitle);
-            } else if(this.oldDescription != this.updateDescription.value) {
-              this.newDescription = this.updateDescription.value;
-              // console.log(this.newDescription);
-            }
-            // console.log(this.updateDescription+"this is from != ''")
-            this.updateBtn.style.display = "block";
-          } else {
-            this.updateBtn.style.display = "none";
-          }
+          // console.log(this.updateDescription+"this is from != ''")
+          this.updateBtn.style.display = "block";
+        } else {
+          this.updateBtn.style.display = "none";
+        }
       });
     } else {
       this.updateTitle.value = "";
@@ -412,27 +398,27 @@ class Notes {
       this.newDescription; 
       this.updateDescription.value = this.oldDescription;
 
-        this.updateNotesForm.addEventListener('keyup', (e) => {
-          if (e.keyCode == 27) {
-            if (this.updateBtn.style.display == 'block') {
-              this.confirmExit();
-            } else {
-              this.closeUpdateNoteForm();
-            }
-          }
-          if(this.oldTitle != this.updateTitle.value || this.oldDescription != this.updateDescription.value) {
-            if(this.oldTitle != this.updateTitle.value) {
-              this.newTitle = this.updateTitle.value;
-              this.newDescription = this.updateDescription.value;
-            } else if(this.oldDescription != this.updateDescription.value) {
-              this.newTitle = this.updateTitle.value;
-              this.newDescription = this.updateDescription.value;
-            }
-            this.updateBtn.style.display = "block";
+      this.updateNotesForm.addEventListener('keyup', (e) => {
+        if (e.keyCode == 27) {
+          if (this.updateBtn.style.display == 'block') {
+            this.confirmExit();
           } else {
-            this.updateBtn.style.display = "none";
+            this.closeUpdateNoteForm();
           }
-        });
+        }
+        if(this.oldTitle != this.updateTitle.value || this.oldDescription != this.updateDescription.value) {
+          if(this.oldTitle != this.updateTitle.value) {
+            this.newTitle = this.updateTitle.value;
+            this.newDescription = this.updateDescription.value;
+          } else if(this.oldDescription != this.updateDescription.value) {
+            this.newTitle = this.updateTitle.value;
+            this.newDescription = this.updateDescription.value;
+          }
+          this.updateBtn.style.display = "block";
+        } else {
+          this.updateBtn.style.display = "none";
+        }
+      });
     }
     this.closeShowBtn.addEventListener('click', () => {
       if (this.updateBtn.style.display == 'block') {
@@ -494,6 +480,7 @@ class AlertBox {
     this.id = id;
     this.option = option;
   }
+
   show (msg) {
     if (msg === ''  || typeof msg === 'undefined' || msg === null) {
       throw '"msg parameter is empty"';
@@ -541,6 +528,5 @@ const throwMessage = new AlertBox('#alert-area', {
   persistent: false,
   hideCloseButton: false
 });
-
 
 const newNotes = new Notes();
