@@ -315,19 +315,19 @@ class Notes {
     
     if (this.updateTitle.value != '' && this.hasHeader != null) {
       this.note.querySelector('.note-header').innerHTML = this.updateTitle.value;
-      this.note.querySelector('p').innerHTML = this.updateDescription.value;
+      this.note.querySelector('p').innerHTML = this.updateDescription.value.replace(/(\r\n|\n|\r)/gm, "<br>");
       this.resizeAllGridItems();
     } else if(this.updateTitle.value == '' && this.hasHeader != null){
       this.note.querySelector('.note-header').remove();
-      this.note.querySelector('p').innerHTML = this.updateDescription.value;
+      this.note.querySelector('p').innerHTML = this.updateDescription.value.replace(/(\r\n|\n|\r)/gm, "<br>");
       this.resizeAllGridItems();
     } else if(this.hasHeader == null && this.updateTitle.value == '') {
-      this.note.querySelector('p').innerHTML = this.updateDescription.value;
+      this.note.querySelector('p').innerHTML = this.updateDescription.value.replace(/(\r\n|\n|\r)/gm, "<br>");
       this.resizeAllGridItems();
     } else if(this.hasHeader == null && this.updateTitle.value != '') {
       this.noteHeader.innerHTML = this.updateTitle.value;
       this.note.insertBefore(this.noteHeader, this.note.children[0]);
-      this.note.querySelector('p').innerHTML = this.updateDescription.value;
+      this.note.querySelector('p').innerHTML = this.updateDescription.value.replace(/(\r\n|\n|\r)/gm, "<br>");
       this.resizeAllGridItems();
     }
   
@@ -355,9 +355,9 @@ class Notes {
     this.updateNotesForm.style.display = "block";
     this.updateDescription.focus();
     if(event.target.parentNode.hasAttribute('has-title')) {
-      this.oldTitle = event.target.closest('.note').querySelector('.note-header').innerHTML;
+      this.oldTitle = event.target.closest('.note').querySelector('.note-header').innerHTML.replace(/<br\s*\/?>/mg,"\n");
       // console.log(this.oldTitle); Для деббагинга
-      this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
+      this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML.replace(/<br\s*\/?>/mg,"\n");
       this.newTitle;
       this.newDescription;
 
@@ -392,7 +392,7 @@ class Notes {
       });
     } else {
       this.updateTitle.value = "";
-      this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML;
+      this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML.replace(/<br\s*\/?>/mg,"\n");
       this.oldTitle = this.updateTitle.value;
       this.newTitle;
       this.newDescription; 
