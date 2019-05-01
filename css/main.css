@@ -11,7 +11,8 @@ body {
   /* color: #272727; */
   color: #202124;
   font-size: 15px;
-  background: #EBEFF2;
+  /* background: #EBEFF2; */
+  background:#EBEEF2;
   text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 }
@@ -49,10 +50,11 @@ header {
   padding-top: 5px;
   padding-bottom: 5px;
   /* background-color: #F0F0F0; */
-  /* border-bottom: 1px solid #EDEFF1; */
+  /* border-bottom: 2px solid #ffffff; */
   font-size: 15px;
-  background: #fff;
+  background: rgb(255, 255, 255);
   transition: 0.2s;
+  
 }
 
 .fixed {
