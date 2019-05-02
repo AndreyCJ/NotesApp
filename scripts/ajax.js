@@ -314,6 +314,7 @@ class Notes {
     // console.log(this.hasHeader);
     
     if (this.updateTitle.value != '' && this.hasHeader != null) {
+      this.li.setAttribute('has-title', 'hasTitle');
       this.note.querySelector('.note-header').innerHTML = this.updateTitle.value;
       this.note.querySelector('p').innerHTML = this.updateDescription.value.replace(/(\r\n|\n|\r)/gm, "<br>");
       this.resizeAllGridItems();
@@ -352,9 +353,11 @@ class Notes {
     this.note = this.theEvent.target.closest('.content');
     this.hasHeader = this.note.querySelector('.note-header');
 
+    // console.log(this.hasHeader); Для деббагинга
+
     this.updateNotesForm.style.display = "block";
     this.updateDescription.focus();
-    if(event.target.parentNode.hasAttribute('has-title')) {
+    if(this.hasHeader != undefined || this.hasHeader != null) {
       this.oldTitle = event.target.closest('.note').querySelector('.note-header').innerHTML.replace(/<br\s*\/?>/mg,"\n");
       // console.log(this.oldTitle); Для деббагинга
       this.oldDescription = event.target.closest('.note').querySelector('p').innerHTML.replace(/<br\s*\/?>/mg,"\n");
