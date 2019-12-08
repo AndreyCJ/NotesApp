@@ -194,9 +194,10 @@ header .container {
 /* NOTES SECTION */
 section.notes {
   display: block;
-  margin-top: 40px;
+  margin: 40px auto;
   position: relative;
   /* height: auto; */
+  max-width: 1280px;
 }
 
 .list-notes {
@@ -648,6 +649,16 @@ section.update-notes {
   border: 1px solid rgb(224, 228, 230);
   color: #444;
   background: rgb(224, 228, 230);
+}
+
+@media (max-width: 767px) {
+  .add-notes-container {
+    width: 100% !important;
+    box-sizing: border-box;
+    height: 100%;
+    margin-top: 0;
+    border-radius: 0;
+  }
 }
 
 @media (max-width: 767px) and (min-width: 481px) {
