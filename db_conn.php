@@ -14,6 +14,13 @@ function db_connection() {
       die("Connection failed: " . $conn->connect_error);
   }
 
+  $db = array(
+    "connect" => $conn,
+    "table" => "todo"
+  );
+  
+  mysqli_set_charset($db["connect"], 'utf8');
+
   // If database is not exist create one
   if (!mysqli_select_db($conn,$dbName)){
       $sql = "CREATE DATABASE ".$dbName;
@@ -25,7 +32,6 @@ function db_connection() {
   }
   
   // If table does not exists create one
-  mysqli_set_charset($db["connect"], 'utf8');
 
   $query = "SELECT ID FROM todo";
   $result = mysqli_query($conn, $query);
@@ -36,13 +42,9 @@ function db_connection() {
       todoTitle varchar(200) NOT NULL,
       todoDescription text NOT NULL,
       done tinyint(1) DEFAULT 0
-    )";
+    ) DEFAULT CHARSET=utf8";
     $result = mysqli_query($conn, $query);
   }
 
-  $db = array(
-    "connect" => $conn,
-    "table" => "todo"
-  );
   return $db;
 }
